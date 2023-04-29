@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'poppins';
-  src: url('./assets/fonts/Poppins-Medium.ttf');
+  font-family: 'inter';
+  src: url('./assets/fonts/Inter-Regular.ttf');
 }
 
 html,
@@ -13,5 +13,5 @@ body {
   height: 100%;
 }
 body {
-  font-family: 'poppins';
+  font-family: 'inter';
 }

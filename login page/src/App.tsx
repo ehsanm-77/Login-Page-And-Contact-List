@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { Login } from './layout/Login/Login';
 
 function App() {
   return (
     <>
-      <div className="bg-red-300">Emo</div>
+      <Login />
     </>
   );
 }
-
 export default App;
