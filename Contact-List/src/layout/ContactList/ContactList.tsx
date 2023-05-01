@@ -167,179 +167,192 @@ const ContactList: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="text-3xl font-bold text-center mb-10 text-blue-700">
+      <div className="text-3xl font-bold text-center mb-3 text-blue-700">
         وب اپلیکیشن مدیریت مخاطبین
       </div>
-      <div className="mb-4">
-        <h2 className="text-2xl font-bold mb-2">اضافه / ویرایش کاربران</h2>
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white shadow rounded px-8 pt-6 pb-4"
-        >
-          <div className="mb-4">
-            <label
-              htmlFor="firstName"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
-              نام:
-            </label>
-            <input
-              id="firstName"
-              name="firstName"
-              type="text"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="نام ... "
-            />
-            <span className="text-red-500 text-sm">{formErrors.firstName}</span>
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="lastName"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
-              نام خانوادگی:
-            </label>
-            <input
-              id="lastName"
-              name="lastName"
-              type="text"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="نام خانوادگی ... "
-            />
-            <span className="text-red-500 text-sm">{formErrors.lastName}</span>
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="phoneNumber"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
-              شماره موبایل:
-            </label>
-            <input
-              id="phoneNumber"
-              name="phoneNumber"
-              type="text"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="شماره موبایل  ... "
-            />
-            <span className="text-red-500 text-sm">
-              {formErrors.phoneNumber}
-            </span>
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="relation"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
-              نسبت:
-            </label>
-            <select
-              id="relation"
-              name="relation"
-              value={formData.relation}
-              onChange={handleChange}
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            >
-              <option value="">نسبت</option>
-              <option value="اعضای خانواده">اعضای خانواده</option>
-              <option value="دوست">دوست</option>
-              <option value="همکار">همکار</option>
-              <option value="فامیل">فامیل</option>
-            </select>
-            <span className="text-red-500 text-sm">{formErrors.relation}</span>
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
-              ایمیل:
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="text"
-              value={formData.email}
-              onChange={handleChange}
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="ایمیل ... "
-            />
-            <span className="text-red-500 text-sm">{formErrors.email}</span>
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="mb-4">
+          <h2 className="text-2xl text-center font-bold mb-2">
+            اضافه / ویرایش کاربران
+          </h2>
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white shadow rounded px-8"
           >
-            {editingContactId ? 'ویرایش' : 'اضافه کردن'}
-          </button>
-        </form>
-      </div>
-      <div>
-        <h2 className="text-2xl font-bold mb-2">لیست کاربران</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {contacts.map((contact) => (
-            <div
-              key={contact.id}
-              className="bg-white shadow rounded px-8 pt-6 pb-4"
-            >
-              <p>
-                <strong>نام:</strong> {contact.firstName} {contact.lastName}
-              </p>
-              <p>
-                <strong>شماره موبایل:</strong> {contact.phoneNumber}
-              </p>
-              <p>
-                <strong>نسبت:</strong> {contact.relation}
-              </p>
-              <p>
-                <strong>ایمیل:</strong> {contact.email}
-              </p>
-              <div className="flex justify-end mt-4">
-                <button
-                  onClick={() => handleEdit(contact.id)}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
-                >
-                  ویرایش
-                </button>
-                <button
-                  onClick={() => handleDelete(contact)}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                  حذف
-                </button>
-              </div>
+            <div className="mb-4">
+              <label
+                htmlFor="firstName"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                نام:
+              </label>
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder="نام ... "
+              />
+              <span className="text-red-500 text-sm">
+                {formErrors.firstName}
+              </span>
             </div>
-          ))}
+            <div className="mb-4">
+              <label
+                htmlFor="lastName"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                نام خانوادگی:
+              </label>
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder="نام خانوادگی ... "
+              />
+              <span className="text-red-500 text-sm">
+                {formErrors.lastName}
+              </span>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="phoneNumber"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                شماره موبایل:
+              </label>
+              <input
+                id="phoneNumber"
+                name="phoneNumber"
+                type="text"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder="شماره موبایل  ... "
+              />
+              <span className="text-red-500 text-sm">
+                {formErrors.phoneNumber}
+              </span>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="relation"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                نسبت:
+              </label>
+              <select
+                id="relation"
+                name="relation"
+                value={formData.relation}
+                onChange={handleChange}
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              >
+                <option value="">نسبت</option>
+                <option value="اعضای خانواده">اعضای خانواده</option>
+                <option value="دوست">دوست</option>
+                <option value="همکار">همکار</option>
+                <option value="فامیل">فامیل</option>
+              </select>
+              <span className="text-red-500 text-sm">
+                {formErrors.relation}
+              </span>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                ایمیل:
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="text"
+                value={formData.email}
+                onChange={handleChange}
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder="ایمیل ... "
+              />
+              <span className="text-red-500 text-sm">{formErrors.email}</span>
+            </div>
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              {editingContactId ? 'ویرایش' : 'اضافه کردن'}
+            </button>
+          </form>
         </div>
+        <div>
+          <h2 className="text-2xl text-center font-bold mb-2">لیست کاربران</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-[450px] overflow-y-scroll">
+            {contacts.map((contact) => (
+              <div
+                key={contact.id}
+                className="bg-white shadow rounded px-8 pt-6 pb-4 flex flex-col justify-between h-[200px]"
+              >
+                <div>
+                  <p>
+                    <strong>نام:</strong> {contact.firstName} {contact.lastName}
+                  </p>
+                  <p>
+                    <strong>شماره موبایل:</strong> {contact.phoneNumber}
+                  </p>
+                  <p>
+                    <strong>نسبت:</strong> {contact.relation}
+                  </p>
+                  <p>
+                    <strong>ایمیل:</strong> {contact.email}
+                  </p>
+                </div>
+
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={() => handleEdit(contact.id)}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+                  >
+                    ویرایش
+                  </button>
+                  <button
+                    onClick={() => handleDelete(contact)}
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    حذف
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <Modal
+          isOpen={showDeleteConfirmation}
+          onRequestClose={cancelDelete}
+          className="modal "
+          overlayClassName="modal-overlay"
+        >
+          <div className="text-center">
+            <p className="mb-4">آیا از حذف این مخاطب اطمینان دارید؟</p>
+            <button
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2"
+              onClick={confirmDelete}
+            >
+              بله
+            </button>
+            <button
+              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+              onClick={cancelDelete}
+            >
+              خیر
+            </button>
+          </div>
+        </Modal>
       </div>
-      <Modal
-        isOpen={showDeleteConfirmation}
-        onRequestClose={cancelDelete}
-        className="modal"
-        overlayClassName="modal-overlay"
-      >
-        <div className="text-center">
-          <p className="mb-4">آیا از حذف این مخاطب اطمینان دارید؟</p>
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2"
-            onClick={confirmDelete}
-          >
-            بله
-          </button>
-          <button
-            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            onClick={cancelDelete}
-          >
-            خیر
-          </button>
-        </div>
-      </Modal>
     </div>
   );
 };
