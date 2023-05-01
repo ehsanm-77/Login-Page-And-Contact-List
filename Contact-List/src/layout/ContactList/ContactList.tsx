@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Modal from 'react-modal';
 
 interface Contact {
   id: number;
@@ -12,7 +13,6 @@ interface Contact {
 const ContactList: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [editingContactId, setEditingContactId] = useState<number | null>(null);
-
   const [formData, setFormData] = useState<Contact>({
     id: 1,
     firstName: '',
@@ -21,6 +21,9 @@ const ContactList: React.FC = () => {
     relation: '',
     email: '',
   });
+  const [showDeleteConfirmation, setShowDeleteConfirmation] =
+    useState<boolean>(false);
+  const [contactToDelete, setContactToDelete] = useState<Contact | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,7 +35,9 @@ const ContactList: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    if (!validateForm()) {
+      return;
+    }
     if (
       !formData.firstName ||
       !formData.lastName ||
@@ -79,15 +84,90 @@ const ContactList: React.FC = () => {
     }
   };
 
-  const handleRemove = (contactId: number) => {
-    setContacts((prevContacts) =>
-      prevContacts.filter((contact) => contact.id !== contactId)
-    );
+  const handleDelete = (contact: Contact) => {
+    setContactToDelete(contact);
+    setShowDeleteConfirmation(true);
+  };
+
+  const confirmDelete = () => {
+    if (contactToDelete) {
+      setContacts((prevContacts) =>
+        prevContacts.filter((contact) => contact.id !== contactToDelete.id)
+      );
+    }
+    setContactToDelete(null);
+    setShowDeleteConfirmation(false);
+  };
+
+  const cancelDelete = () => {
+    setContactToDelete(null);
+    setShowDeleteConfirmation(false);
+  };
+
+  const [formErrors, setFormErrors] = useState({
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    relation: '',
+    email: '',
+  });
+  const validatePhoneNumber = (phoneNumber: string): boolean => {
+    const phoneRegex = /^\d{11}$/;
+    return phoneRegex.test(phoneNumber);
+  };
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  const validateForm = () => {
+    let isValid = true;
+    const errors = {
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      relation: '',
+      email: '',
+    };
+
+    if (!formData.firstName) {
+      isValid = false;
+      errors.firstName = 'لطفا نام را وارد کنید';
+    }
+
+    if (!formData.lastName) {
+      isValid = false;
+      errors.lastName = 'لطفا نام خانوادگی را وارد کنید';
+    }
+
+    if (!formData.phoneNumber) {
+      isValid = false;
+      errors.phoneNumber = 'لطفا شماره موبایل را وارد کنید';
+    } else if (!validatePhoneNumber(formData.phoneNumber)) {
+      isValid = false;
+      errors.phoneNumber = 'لطفا شماره موبایل را به صورت صحیح وارد کنید';
+    }
+
+    if (!formData.relation) {
+      isValid = false;
+      errors.relation = 'لطفا نسبت خود را انتخاب کنید';
+    }
+
+    if (!formData.email) {
+      isValid = false;
+      errors.email = 'لطفا ایمیل خود را وارد کنید';
+    } else if (!validateEmail(formData.email)) {
+      isValid = false;
+      errors.email = 'لطفا ایمیل را به صورت صحیح وارد کنید';
+    }
+
+    setFormErrors(errors);
+    return isValid;
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="text-3xl text-center mb-10 text-blue-700">
+      <div className="text-3xl font-bold text-center mb-10 text-blue-700">
         وب اپلیکیشن مدیریت مخاطبین
       </div>
       <div className="mb-4">
@@ -112,6 +192,7 @@ const ContactList: React.FC = () => {
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="نام ... "
             />
+            <span className="text-red-500 text-sm">{formErrors.firstName}</span>
           </div>
           <div className="mb-4">
             <label
@@ -129,6 +210,7 @@ const ContactList: React.FC = () => {
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="نام خانوادگی ... "
             />
+            <span className="text-red-500 text-sm">{formErrors.lastName}</span>
           </div>
           <div className="mb-4">
             <label
@@ -146,6 +228,9 @@ const ContactList: React.FC = () => {
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="شماره موبایل  ... "
             />
+            <span className="text-red-500 text-sm">
+              {formErrors.phoneNumber}
+            </span>
           </div>
           <div className="mb-4">
             <label
@@ -167,6 +252,7 @@ const ContactList: React.FC = () => {
               <option value="همکار">همکار</option>
               <option value="فامیل">فامیل</option>
             </select>
+            <span className="text-red-500 text-sm">{formErrors.relation}</span>
           </div>
           <div className="mb-4">
             <label
@@ -184,17 +270,17 @@ const ContactList: React.FC = () => {
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="ایمیل ... "
             />
+            <span className="text-red-500 text-sm">{formErrors.email}</span>
           </div>
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            {editingContactId ? 'ویرایش مخاطب' : 'افزودن مخاطب'}
+            {editingContactId ? 'ویرایش' : 'اضافه کردن'}
           </button>
         </form>
       </div>
-
-      <div className="mb-4">
+      <div>
         <h2 className="text-2xl font-bold mb-2">لیست کاربران</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {contacts.map((contact) => (
@@ -222,7 +308,7 @@ const ContactList: React.FC = () => {
                   ویرایش
                 </button>
                 <button
-                  onClick={() => handleRemove(contact.id)}
+                  onClick={() => handleDelete(contact)}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
                   حذف
@@ -232,6 +318,28 @@ const ContactList: React.FC = () => {
           ))}
         </div>
       </div>
+      <Modal
+        isOpen={showDeleteConfirmation}
+        onRequestClose={cancelDelete}
+        className="modal"
+        overlayClassName="modal-overlay"
+      >
+        <div className="text-center">
+          <p className="mb-4">آیا از حذف این مخاطب اطمینان دارید؟</p>
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2"
+            onClick={confirmDelete}
+          >
+            بله
+          </button>
+          <button
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+            onClick={cancelDelete}
+          >
+            خیر
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };
