@@ -1,4 +1,4 @@
-import ContactList from './layout/ContactList';
+import ContactList from './layout/ContactList/ContactList';
 
 function App() {
   return (

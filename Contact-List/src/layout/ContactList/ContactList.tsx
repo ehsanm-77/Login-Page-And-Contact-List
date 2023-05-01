@@ -87,8 +87,11 @@ const ContactList: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <div className="text-3xl text-center mb-10 text-blue-700">
+        وب اپلیکیشن مدیریت مخاطبین
+      </div>
       <div className="mb-4">
-        <h2 className="text-2xl font-bold mb-2">Add/Edit Contact</h2>
+        <h2 className="text-2xl font-bold mb-2">اضافه / ویرایش کاربران</h2>
         <form
           onSubmit={handleSubmit}
           className="bg-white shadow rounded px-8 pt-6 pb-4"
@@ -98,7 +101,7 @@ const ContactList: React.FC = () => {
               htmlFor="firstName"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              First Name:
+              نام:
             </label>
             <input
               id="firstName"
@@ -107,7 +110,7 @@ const ContactList: React.FC = () => {
               value={formData.firstName}
               onChange={handleChange}
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="First Name"
+              placeholder="نام ... "
             />
           </div>
           <div className="mb-4">
@@ -115,7 +118,7 @@ const ContactList: React.FC = () => {
               htmlFor="lastName"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              Last Name:
+              نام خانوادگی:
             </label>
             <input
               id="lastName"
@@ -124,7 +127,7 @@ const ContactList: React.FC = () => {
               value={formData.lastName}
               onChange={handleChange}
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Last Name"
+              placeholder="نام خانوادگی ... "
             />
           </div>
           <div className="mb-4">
@@ -132,7 +135,7 @@ const ContactList: React.FC = () => {
               htmlFor="phoneNumber"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              Phone Number:
+              شماره موبایل:
             </label>
             <input
               id="phoneNumber"
@@ -141,7 +144,7 @@ const ContactList: React.FC = () => {
               value={formData.phoneNumber}
               onChange={handleChange}
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Phone Number"
+              placeholder="شماره موبایل  ... "
             />
           </div>
           <div className="mb-4">
@@ -149,7 +152,7 @@ const ContactList: React.FC = () => {
               htmlFor="relation"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              Relation:
+              نسبت:
             </label>
             <select
               id="relation"
@@ -158,11 +161,11 @@ const ContactList: React.FC = () => {
               onChange={handleChange}
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
-              <option value="">Select Relation</option>
-              <option value="Family">Family</option>
-              <option value="Friend">Friend</option>
-              <option value="Colleague">Colleague</option>
-              <option value="Relatives">Relatives</option>
+              <option value="">نسبت</option>
+              <option value="اعضای خانواده">اعضای خانواده</option>
+              <option value="دوست">دوست</option>
+              <option value="همکار">همکار</option>
+              <option value="فامیل">فامیل</option>
             </select>
           </div>
           <div className="mb-4">
@@ -170,7 +173,7 @@ const ContactList: React.FC = () => {
               htmlFor="email"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              Email:
+              ایمیل:
             </label>
             <input
               id="email"
@@ -179,20 +182,20 @@ const ContactList: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Email"
+              placeholder="ایمیل ... "
             />
           </div>
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            {editingContactId ? 'Edit Contact' : 'Add Contact'}
+            {editingContactId ? 'ویرایش مخاطب' : 'افزودن مخاطب'}
           </button>
         </form>
       </div>
 
       <div className="mb-4">
-        <h2 className="text-2xl font-bold mb-2">Contact List</h2>
+        <h2 className="text-2xl font-bold mb-2">لیست کاربران</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {contacts.map((contact) => (
             <div
@@ -200,29 +203,29 @@ const ContactList: React.FC = () => {
               className="bg-white shadow rounded px-8 pt-6 pb-4"
             >
               <p>
-                <strong>Name:</strong> {contact.firstName} {contact.lastName}
+                <strong>نام:</strong> {contact.firstName} {contact.lastName}
               </p>
               <p>
-                <strong>Phone Number:</strong> {contact.phoneNumber}
+                <strong>شماره موبایل:</strong> {contact.phoneNumber}
               </p>
               <p>
-                <strong>Relation:</strong> {contact.relation}
+                <strong>نسبت:</strong> {contact.relation}
               </p>
               <p>
-                <strong>Email:</strong> {contact.email}
+                <strong>ایمیل:</strong> {contact.email}
               </p>
               <div className="flex justify-end mt-4">
                 <button
                   onClick={() => handleEdit(contact.id)}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
                 >
-                  Edit
+                  ویرایش
                 </button>
                 <button
                   onClick={() => handleRemove(contact.id)}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
-                  Remove
+                  حذف
                 </button>
               </div>
             </div>
