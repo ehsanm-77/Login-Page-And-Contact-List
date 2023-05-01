@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'vazir';
+  src: url('./assets/fonts/Vazir-Regular-FD.woff2');
+}
+body,
+::placeholder {
+  font-family: 'vazir';
+}
