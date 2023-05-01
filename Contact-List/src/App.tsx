@@ -1,5 +1,11 @@
+import ContactList from './layout/ContactList';
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <ContactList />
+    </>
+  );
 }
 
 export default App;
