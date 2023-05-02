@@ -32,6 +32,7 @@ const ContactList: React.FC = () => {
       [name]: value,
     }));
   };
+  const [mode, setMode] = useState('light');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -166,10 +167,15 @@ const ContactList: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="text-3xl font-bold text-center mb-3 text-blue-700">
+    <div
+      className={`mx-auto px-4 ${mode === 'dark' ? 'dark-mode' : 'light-mode'}`}
+    >
+      <div className="text-3xl font-bold text-center mb-3 text-blue-700 bg-sky-200 relative rounded-b-full top-0 p-2">
         وب اپلیکیشن مدیریت مخاطبین
       </div>
+      <button onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}>
+        {mode === 'dark' ? 'Light Mode' : 'Dark Mode'}
+      </button>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="mb-4">
           <h2 className="text-2xl text-center font-bold mb-2">
@@ -177,12 +183,16 @@ const ContactList: React.FC = () => {
           </h2>
           <form
             onSubmit={handleSubmit}
-            className="bg-white shadow rounded px-8"
+            className={`bg-white shadow-md rounded px-8 ${
+              mode == 'dark'
+                ? 'bg-gray-700 text-white'
+                : 'bg-gray-100 text-gray-700'
+            }`}
           >
             <div className="mb-4">
               <label
                 htmlFor="firstName"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-sm font-bold mb-2"
               >
                 نام:
               </label>
@@ -202,7 +212,7 @@ const ContactList: React.FC = () => {
             <div className="mb-4">
               <label
                 htmlFor="lastName"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-sm font-bold mb-2"
               >
                 نام خانوادگی:
               </label>
@@ -222,7 +232,7 @@ const ContactList: React.FC = () => {
             <div className="mb-4">
               <label
                 htmlFor="phoneNumber"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-sm font-bold mb-2"
               >
                 شماره موبایل:
               </label>
@@ -242,7 +252,7 @@ const ContactList: React.FC = () => {
             <div className="mb-4">
               <label
                 htmlFor="relation"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-sm font-bold mb-2"
               >
                 نسبت:
               </label>
@@ -264,10 +274,7 @@ const ContactList: React.FC = () => {
               </span>
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
+              <label htmlFor="email" className="block text-sm font-bold mb-2">
                 ایمیل:
               </label>
               <input
@@ -283,7 +290,7 @@ const ContactList: React.FC = () => {
             </div>
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-3"
             >
               {editingContactId ? 'ویرایش' : 'اضافه کردن'}
             </button>
@@ -291,11 +298,21 @@ const ContactList: React.FC = () => {
         </div>
         <div>
           <h2 className="text-2xl text-center font-bold mb-2">لیست کاربران</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-[450px] overflow-y-scroll">
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 gap-4 shadow-md rounded-md h-[465px] overflow-y-scroll ${
+              mode == 'dark'
+                ? 'bg-gray-700 text-white'
+                : 'bg-gray-100 text-gray-700'
+            }`}
+          >
             {contacts.map((contact) => (
               <div
                 key={contact.id}
-                className="bg-white shadow rounded px-8 pt-6 pb-4 flex flex-col justify-between h-[200px]"
+                className={` ${
+                  mode == 'dark'
+                    ? 'bg-gray-600 text-white'
+                    : 'bg-gray-200 text-gray-700'
+                } shadow rounded px-8 pt-6 pb-4 flex flex-col justify-between h-[200px] m-2 shadow-md`}
               >
                 <div>
                   <p>
@@ -330,28 +347,32 @@ const ContactList: React.FC = () => {
             ))}
           </div>
         </div>
-        <Modal
-          isOpen={showDeleteConfirmation}
-          onRequestClose={cancelDelete}
-          className="modal "
-          overlayClassName="modal-overlay"
-        >
-          <div className="text-center">
-            <p className="mb-4">آیا از حذف این مخاطب اطمینان دارید؟</p>
-            <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={confirmDelete}
-            >
-              بله
-            </button>
-            <button
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-              onClick={cancelDelete}
-            >
-              خیر
-            </button>
-          </div>
-        </Modal>
+        <div>
+          <Modal
+            isOpen={showDeleteConfirmation}
+            onRequestClose={cancelDelete}
+            className="modal"
+            overlayClassName="modal-overlay"
+          >
+            <div className="text-center rounded-full bg-gray-400 p-10">
+              <p className="mb-4 text-xl">
+                آیا از حذف این مخاطب اطمینان دارید؟
+              </p>
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2"
+                onClick={confirmDelete}
+              >
+                بله
+              </button>
+              <button
+                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                onClick={cancelDelete}
+              >
+                خیر
+              </button>
+            </div>
+          </Modal>
+        </div>
       </div>
     </div>
   );

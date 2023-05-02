@@ -30,3 +30,45 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 90%;
+  width: 400px;
+  max-height: 90%;
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .modal {
+    width: 90%;
+  }
+}
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dark-mode {
+  background-color: #1f2937;
+  color: #ffffff;
+}
+
+.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
