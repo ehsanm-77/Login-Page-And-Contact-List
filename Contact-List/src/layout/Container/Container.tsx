@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-// import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '../../components/Modal/Modal';
 import ContactForm from '../ContactForm/ContactForm';
-import ContactListA from '../ContactListA/ContactListA';
 import Header from '../Header/Header';
+import ContactList from '../ContactListA/ContactListA';
+import { handleSubmit } from '../../functions/HandleSubmit/HandleSubmit';
+
 interface Contact {
   id: number;
   firstName: string;
@@ -14,7 +15,7 @@ interface Contact {
   email: string;
 }
 
-const ContactList: React.FC = () => {
+const Container: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [editingContactId, setEditingContactId] = useState<number | null>(null);
   const [formData, setFormData] = useState<Contact>({
@@ -41,62 +42,6 @@ const ContactList: React.FC = () => {
     }));
   };
   const [mode, setMode] = useState('light');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
-    if (
-      !formData.firstName ||
-      !formData.lastName ||
-      !formData.phoneNumber ||
-      !formData.relation ||
-      !formData.email
-    ) {
-      return;
-    }
-    if (editingContactId) {
-      // Editing an existing contact
-      setContacts((prevContacts) =>
-        prevContacts.map((contact) =>
-          contact.id === editingContactId
-            ? { ...formData, id: contact.id }
-            : contact
-        )
-      );
-      setEditingContactId(null);
-    } else {
-      const isContactExists = contacts.some(
-        (contact) =>
-          contact.firstName === formData.firstName &&
-          contact.lastName === formData.lastName
-      );
-      if (isContactExists) {
-        // Contact with the same name already exists
-        toast.error('کاربر با اسم مشابه وجود دارد', {
-          className: 'text-xl text-right',
-        });
-        return;
-      }
-
-      // Adding a new contact
-      setContacts((prevContacts) => [
-        ...prevContacts,
-        { ...formData, id: Date.now() },
-      ]);
-    }
-
-    // Clear the form data
-    setFormData({
-      id: 1,
-      firstName: '',
-      lastName: '',
-      phoneNumber: '',
-      relation: '',
-      email: '',
-    });
-  };
 
   const handleEdit = (contactId: number) => {
     const contactToEdit = contacts.find((contact) => contact.id === contactId);
@@ -186,7 +131,18 @@ const ContactList: React.FC = () => {
     setFormErrors(errors);
     return isValid;
   };
-
+  const handleFormSubmit = (e: React.FormEvent) => {
+    handleSubmit({
+      e,
+      validateForm,
+      formData,
+      editingContactId,
+      setContacts,
+      setEditingContactId,
+      contacts,
+      setFormData,
+    });
+  };
   return (
     <div
       className={`mx-auto px-4 ${mode === 'dark' ? 'dark-mode' : 'light-mode'}`}
@@ -198,12 +154,12 @@ const ContactList: React.FC = () => {
           formErrors={formErrors}
           mode={mode}
           handleChange={handleChange}
-          handleSubmit={handleSubmit}
+          handleSubmit={handleFormSubmit} // Pass the new
           contacts={contacts}
           validateForm={validateForm}
           editingContactId={editingContactId}
         />
-        <ContactListA
+        <ContactList
           contacts={contacts}
           mode={mode}
           handleEdit={handleEdit}
@@ -221,4 +177,4 @@ const ContactList: React.FC = () => {
   );
 };
 
-export default ContactList;
+export default Container;

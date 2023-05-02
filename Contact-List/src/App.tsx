@@ -1,10 +1,10 @@
-import ContactList from './layout/ContactList/ContactList';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Container from './layout/Container/Container';
 function App() {
   return (
     <>
-      <ContactList />
+      <Container />
       <ToastContainer />
     </>
   );

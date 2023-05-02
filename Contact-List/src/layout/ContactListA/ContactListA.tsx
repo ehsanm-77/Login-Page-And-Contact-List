@@ -7,7 +7,7 @@ interface ContactListProps {
   handleDelete: (contact: Contact) => void;
 }
 
-const ContactListA: React.FC<ContactListProps> = ({
+const ContactList: React.FC<ContactListProps> = ({
   contacts,
   mode,
   handleEdit,
@@ -70,4 +70,4 @@ const ContactListA: React.FC<ContactListProps> = ({
   );
 };
 
-export default ContactListA;
+export default ContactList;
