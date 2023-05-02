@@ -26,7 +26,11 @@ const ContactList: React.FC = () => {
     useState<boolean>(false);
   const [contactToDelete, setContactToDelete] = useState<Contact | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -47,7 +51,7 @@ const ContactList: React.FC = () => {
       !formData.relation ||
       !formData.email
     ) {
-      return; // Don't submit if any required field is empty
+      return;
     }
     if (editingContactId) {
       // Editing an existing contact
