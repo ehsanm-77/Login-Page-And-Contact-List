@@ -60,6 +60,19 @@ const ContactList: React.FC = () => {
       );
       setEditingContactId(null);
     } else {
+      const isContactExists = contacts.some(
+        (contact) =>
+          contact.firstName === formData.firstName &&
+          contact.lastName === formData.lastName
+      );
+      if (isContactExists) {
+        // Contact with the same name already exists
+        toast.error('کاربر با اسم مشابه وجود دارد', {
+          className: 'text-xl text-right',
+        });
+        return;
+      }
+
       // Adding a new contact
       setContacts((prevContacts) => [
         ...prevContacts,
@@ -303,7 +316,16 @@ const ContactList: React.FC = () => {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-3 shadow-md drop-shadow-md"
               onClick={() => {
-                if (validateForm() && editingContactId == null) {
+                const isContactExists = contacts.some(
+                  (contact) =>
+                    contact.firstName === formData.firstName &&
+                    contact.lastName === formData.lastName
+                );
+                if (
+                  validateForm() &&
+                  editingContactId == null &&
+                  !isContactExists
+                ) {
                   toast.success(
                     `کاربر ${formData.firstName} ${formData.lastName} با موفقیت اضافه شد`,
                     { className: 'text-xl text-right' }
@@ -313,9 +335,11 @@ const ContactList: React.FC = () => {
                     className: 'text-xl text-right',
                   });
                 } else {
-                  toast.success(`ویرایش کاربر با موفقیت انجام شد`, {
-                    className: 'text-xl text-right',
-                  });
+                  if (!isContactExists) {
+                    toast.success(`ویرایش کاربر با موفقیت انجام شد`, {
+                      className: 'text-xl text-right',
+                    });
+                  }
                 }
               }}
             >
