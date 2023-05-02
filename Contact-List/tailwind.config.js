@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        Headers: '#9a9a9a',
+        dark: '#1f2937',
       },
     },
   },

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import { toast } from 'react-toastify';
 
 interface Contact {
   id: number;
@@ -192,7 +193,7 @@ const ContactList: React.FC = () => {
             onSubmit={handleSubmit}
             className={`bg-white shadow-md drop-shadow-md rounded px-8 pt-3 ${
               mode == 'dark'
-                ? 'bg-gray-800 text-white'
+                ? 'bg-dark text-white'
                 : 'bg-gray-100 text-gray-700'
             }`}
           >
@@ -301,6 +302,22 @@ const ContactList: React.FC = () => {
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-3 shadow-md drop-shadow-md"
+              onClick={() => {
+                if (validateForm() && editingContactId == null) {
+                  toast.success(
+                    `کاربر ${formData.firstName} ${formData.lastName} با موفقیت اضافه شد`,
+                    { className: 'text-xl text-right' }
+                  );
+                } else if (!validateForm()) {
+                  toast.error(`افزودن کاربر با خطا روبرو شد`, {
+                    className: 'text-xl text-right',
+                  });
+                } else {
+                  toast.success(`ویرایش کاربر با موفقیت انجام شد`, {
+                    className: 'text-xl text-right',
+                  });
+                }
+              }}
             >
               {editingContactId ? 'ویرایش' : 'اضافه کردن'}
             </button>

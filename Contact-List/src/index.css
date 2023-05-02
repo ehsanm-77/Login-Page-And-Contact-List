@@ -72,3 +72,10 @@ body,
   background-color: #ffffff;
   color: #000000;
 }
+.my-toast {
+  background-color: #333;
+  color: #fff;
+  border-radius: 100%;
+  font-size: 30px;
+  padding: 12px;
+}
