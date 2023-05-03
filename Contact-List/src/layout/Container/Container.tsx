@@ -17,6 +17,7 @@ interface Contact {
 const Container: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [editingContactId, setEditingContactId] = useState<number | null>(null);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [formData, setFormData] = useState<Contact>({
     id: 1,
     firstName: '',
@@ -101,6 +102,11 @@ const Container: React.FC = () => {
       errors.firstName = 'لطفا نام را وارد کنید';
     }
 
+    if (formData.firstName.length < 3 && formData.firstName) {
+      isValid = false;
+      errors.firstName = 'لطفا نام را به صورت صحیح وارد کنید';
+    }
+
     if (!formData.lastName) {
       isValid = false;
       errors.lastName = 'لطفا نام خانوادگی را وارد کنید';
@@ -126,7 +132,7 @@ const Container: React.FC = () => {
       isValid = false;
       errors.email = 'لطفا ایمیل را به صورت صحیح وارد کنید';
     }
-
+    setIsFormValid(isValid);
     setFormErrors(errors);
     return isValid;
   };
@@ -157,6 +163,7 @@ const Container: React.FC = () => {
           handleSubmit={handleFormSubmit} // Pass the new
           contacts={contacts}
           validateForm={validateForm}
+          isFormValid={isFormValid}
           editingContactId={editingContactId}
         />
         <ContactList

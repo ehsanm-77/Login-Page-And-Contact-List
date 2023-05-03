@@ -15,6 +15,7 @@ interface ContactFormProps {
   formErrors: any;
   mode: string;
   contacts: [];
+  isFormValid: boolean;
   validateForm: () => boolean;
   editingContactId: number | null;
   handleChange: (
@@ -32,9 +33,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
   handleChange,
   handleSubmit,
   contacts,
+  isFormValid,
   validateForm,
   editingContactId,
 }) => {
+  // const isFormValid = validateForm();
   return (
     <div className="mb-4">
       <h2 className="text-2xl text-center font-bold mb-2 drop-shadow-md">
@@ -43,7 +46,9 @@ const ContactForm: React.FC<ContactFormProps> = ({
       <form
         onSubmit={handleSubmit}
         className={`bg-white shadow-md drop-shadow-md rounded px-8 pt-3 ${
-          mode == 'dark' ? 'bg-dark text-white' : 'bg-gray-100 text-gray-700'
+          mode == 'dark'
+            ? 'bg-slate-800 text-white'
+            : 'bg-gray-100 text-gray-700'
         }`}
       >
         <div className="mb-3">
@@ -59,6 +64,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             type="text"
             value={formData.firstName}
             onChange={handleChange}
+            onKeyUp={validateForm}
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline drop-shadow-md"
             placeholder="نام ... "
           />
@@ -77,6 +83,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             type="text"
             value={formData.lastName}
             onChange={handleChange}
+            onKeyUp={validateForm}
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline drop-shadow-md"
             placeholder="نام خانوادگی ... "
           />
@@ -94,6 +101,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="phoneNumber"
             type="text"
             value={formData.phoneNumber}
+            onKeyUp={validateForm}
             onChange={handleChange}
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline drop-shadow-md"
             placeholder="شماره موبایل  ... "
@@ -133,6 +141,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             id="email"
             name="email"
             type="text"
+            onKeyUp={validateForm}
             value={formData.email}
             onChange={handleChange}
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline drop-shadow-md"
@@ -142,6 +151,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
         </div>
         <button
           type="submit"
+          disabled={!isFormValid}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-3 shadow-md drop-shadow-md"
           onClick={() => {
             const isContactExists = contacts.some(
