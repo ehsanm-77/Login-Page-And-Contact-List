@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '../../components/Modal/Modal';
 import ContactForm from '../ContactForm/ContactForm';
 import Header from '../Header/Header';
@@ -132,6 +131,7 @@ const Container: React.FC = () => {
     return isValid;
   };
   const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     handleSubmit({
       e,
       validateForm,
