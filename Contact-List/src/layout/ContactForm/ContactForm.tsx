@@ -202,7 +202,6 @@ const ContactForm: React.FC<ContactFormProps> = ({
                 });
               }
             }
-            return !isFormValid;
           }}
         >
           {editingContactId ? 'ویرایش' : 'اضافه کردن'}

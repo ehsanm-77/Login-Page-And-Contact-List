@@ -9,6 +9,8 @@ export const handleSubmit = ({
   setEditingContactId,
   contacts,
   setFormData,
+  isFormValid,
+  setIsFormValid,
 }: any) => {
   e.preventDefault();
   if (!validateForm()) {
@@ -47,14 +49,12 @@ export const handleSubmit = ({
       return;
     }
 
-    // Adding a new contact
     setContacts((prevContacts) => [
       ...prevContacts,
       { ...formData, id: Date.now() },
     ]);
   }
 
-  // Clear the form data
   setFormData({
     id: 1,
     firstName: '',
@@ -63,4 +63,5 @@ export const handleSubmit = ({
     relation: '',
     email: '',
   });
+  setIsFormValid(false);
 };

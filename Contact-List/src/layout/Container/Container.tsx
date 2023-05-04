@@ -205,6 +205,8 @@ const Container: React.FC = () => {
       setEditingContactId,
       contacts,
       setFormData,
+      isFormValid,
+      setIsFormValid,
     });
   };
   return (
