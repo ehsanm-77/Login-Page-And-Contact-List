@@ -65,7 +65,9 @@ const ContactForm: React.FC<ContactFormProps> = ({
       <form
         onSubmit={handleSubmit}
         className={`bg-white shadow-md drop-shadow-md rounded px-8 pt-3 ${
-          mode == 'dark' ? 'bg-dark text-white' : 'bg-gray-100 text-gray-700'
+          mode == 'dark'
+            ? 'bg-slate-800 text-white'
+            : 'bg-gray-100 text-gray-700'
         }`}
       >
         <div className="mb-3">

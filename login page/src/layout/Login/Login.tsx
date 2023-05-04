@@ -38,6 +38,9 @@ export const Login: React.FC = () => {
 
     if (!formData.password) {
       validationErrors.password = 'Password is required';
+    } else if (!isValidPassword(formData.password)) {
+      validationErrors.password =
+        'a password to be at least 8 characters long, contain at least one letter (uppercase or lowercase), and at least one digit';
     }
 
     if (!formData.rePassword) {
@@ -55,6 +58,11 @@ export const Login: React.FC = () => {
   const isValidEmail = (email: string) => {
     const emailRegex = /^\S+@\S+\.\S+$/;
     return emailRegex.test(email);
+  };
+
+  const isValidPassword = (password: string) => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // valid example Abcdefg1
+    return passwordRegex.test(password);
   };
 
   return (
