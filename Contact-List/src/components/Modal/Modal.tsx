@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import { toast } from 'react-toastify';
 
 interface DeleteConfirmationModalProps {
   showDeleteConfirmation: boolean;
@@ -23,7 +24,12 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
         <p className="mb-4 text-xl">آیا از حذف این مخاطب اطمینان دارید؟</p>
         <button
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2"
-          onClick={confirmDelete}
+          onClick={() => {
+            confirmDelete();
+            toast.success(`حذف کاربر با موفقیت انجام شد`, {
+              className: 'text-xl text-right',
+            });
+          }}
         >
           بله
         </button>

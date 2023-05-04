@@ -46,9 +46,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
       <form
         onSubmit={handleSubmit}
         className={`bg-white shadow-md drop-shadow-md rounded px-8 pt-3 ${
-          mode == 'dark'
-            ? 'bg-slate-800 text-white'
-            : 'bg-gray-100 text-gray-700'
+          mode == 'dark' ? 'bg-dark text-white' : 'bg-gray-100 text-gray-700'
         }`}
       >
         <div className="mb-3">
@@ -152,7 +150,9 @@ const ContactForm: React.FC<ContactFormProps> = ({
         <button
           type="submit"
           disabled={!isFormValid}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-3 shadow-md drop-shadow-md"
+          className={`${
+            !isFormValid ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-700'
+          } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-3 shadow-md drop-shadow-md`}
           onClick={() => {
             const isContactExists = contacts.some(
               (contact) =>

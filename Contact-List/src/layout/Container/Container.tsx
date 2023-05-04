@@ -100,9 +100,7 @@ const Container: React.FC = () => {
     if (!formData.firstName) {
       isValid = false;
       errors.firstName = 'لطفا نام را وارد کنید';
-    }
-
-    if (formData.firstName.length < 3 && formData.firstName) {
+    } else if (formData.firstName.length < 3) {
       isValid = false;
       errors.firstName = 'لطفا نام را به صورت صحیح وارد کنید';
     }
@@ -132,6 +130,7 @@ const Container: React.FC = () => {
       isValid = false;
       errors.email = 'لطفا ایمیل را به صورت صحیح وارد کنید';
     }
+
     setIsFormValid(isValid);
     setFormErrors(errors);
     return isValid;
