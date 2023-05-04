@@ -71,68 +71,127 @@ const Container: React.FC = () => {
     setShowDeleteConfirmation(false);
   };
 
-  const [formErrors, setFormErrors] = useState({
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    relation: '',
-    email: '',
-  });
-  const validatePhoneNumber = (phoneNumber: string): boolean => {
+  // const [formErrors, setFormErrors] = useState({
+  //   firstName: '',
+  //   lastName: '',
+  //   phoneNumber: '',
+  //   relation: '',
+  //   email: '',
+  // });
+  const [firstNameError, setFirstNameError] = useState<string>('');
+  const [lastNameError, setLastNameError] = useState<string>('');
+  const [phoneNumberError, setPhoneNumberError] = useState<string>('');
+  const [relationError, setRelationError] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
+
+  const validatePhoneNumber = () => {
     const phoneRegex = /^\d{11}$/;
-    return phoneRegex.test(phoneNumber);
-  };
-
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-  const validateForm = () => {
-    let isValid = true;
+    let isValid;
     const errors = {
-      firstName: '',
-      lastName: '',
       phoneNumber: '',
-      relation: '',
-      email: '',
     };
-
-    if (!formData.firstName) {
-      isValid = false;
-      errors.firstName = 'لطفا نام را وارد کنید';
-    } else if (formData.firstName.length < 3) {
-      isValid = false;
-      errors.firstName = 'لطفا نام را به صورت صحیح وارد کنید';
-    }
-
-    if (!formData.lastName) {
-      isValid = false;
-      errors.lastName = 'لطفا نام خانوادگی را وارد کنید';
-    }
-
     if (!formData.phoneNumber) {
       isValid = false;
       errors.phoneNumber = 'لطفا شماره موبایل را وارد کنید';
-    } else if (!validatePhoneNumber(formData.phoneNumber)) {
+      setPhoneNumberError(errors.phoneNumber);
+    } else if (!phoneRegex.test(formData.phoneNumber)) {
       isValid = false;
       errors.phoneNumber = 'لطفا شماره موبایل را به صورت صحیح وارد کنید';
+      setPhoneNumberError(errors.phoneNumber);
+    } else {
+      isValid = true;
+      setPhoneNumberError(errors.phoneNumber);
     }
+    return isValid;
+  };
 
-    if (!formData.relation) {
-      isValid = false;
-      errors.relation = 'لطفا نسبت خود را انتخاب کنید';
-    }
-
+  const validateEmail = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let isValid;
+    const errors = {
+      email: '',
+    };
     if (!formData.email) {
       isValid = false;
       errors.email = 'لطفا ایمیل خود را وارد کنید';
-    } else if (!validateEmail(formData.email)) {
+      setEmailError(errors.email);
+    } else if (!emailRegex.test(formData.email)) {
+      // Corrected condition
       isValid = false;
       errors.email = 'لطفا ایمیل را به صورت صحیح وارد کنید';
+      setEmailError(errors.email);
+    } else {
+      isValid = true;
+      setEmailError(errors.email);
     }
+    return isValid;
+  };
 
-    setIsFormValid(isValid);
-    setFormErrors(errors);
+  const validateFirstName = () => {
+    let isValid;
+    const errors = {
+      firstName: '',
+    };
+    if (!formData.firstName) {
+      isValid = false;
+      errors.firstName = 'لطفا نام را وارد کنید';
+      setFirstNameError(errors.firstName);
+      setLastNameError('');
+    } else if (formData.firstName.length < 3) {
+      isValid = false;
+      errors.firstName = 'لطفا نام را به صورت صحیح وارد کنید';
+      setFirstNameError(errors.firstName);
+    } else {
+      isValid = true;
+      setFirstNameError(errors.firstName);
+    }
+    return isValid;
+  };
+  const validateLastName = () => {
+    let isValid;
+    const errors = {
+      lastName: '',
+    };
+    if (!formData.lastName) {
+      isValid = false;
+      errors.lastName = 'لطفا نام خانوادگی را وارد کنید';
+      setLastNameError(errors.lastName);
+    } else {
+      isValid = true;
+      setLastNameError(errors.lastName);
+    }
+    return isValid;
+  };
+  const validateRelation = () => {
+    let isValid;
+    const errors = {
+      relation: '',
+    };
+    if (!formData.relation) {
+      isValid = false;
+      errors.relation = 'لطفا نسبت خود را انتخاب کنید';
+      setRelationError(errors.relation);
+    } else {
+      isValid = true;
+      setRelationError(errors.relation);
+    }
+    return isValid;
+  };
+  const validateForm = () => {
+    const isFirstNameValid = validateFirstName();
+    const isLastNameValid = validateLastName();
+    const isEmailValid = validateEmail();
+    const isPhoneNumberValid = validatePhoneNumber();
+    const isRelationValid = validateRelation();
+
+    const isValid =
+      isFirstNameValid &&
+      isLastNameValid &&
+      isEmailValid &&
+      isPhoneNumberValid &&
+      isRelationValid;
+
+    setIsFormValid(isValid); // Update the isFormValid state with the validation result
     return isValid;
   };
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -156,12 +215,22 @@ const Container: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <ContactForm
           formData={formData}
-          formErrors={formErrors}
+          // formErrors={formErrors}
+          firstNameError={firstNameError}
+          lastNameError={lastNameError}
+          phoneNumberError={phoneNumberError}
+          relationError={relationError}
+          emailError={emailError}
           mode={mode}
           handleChange={handleChange}
           handleSubmit={handleFormSubmit} // Pass the new
           contacts={contacts}
           validateForm={validateForm}
+          validateFirstName={validateFirstName}
+          validateLastName={validateLastName}
+          validatePhoneNumber={validatePhoneNumber}
+          validateRelation={validateRelation}
+          validateEmail={validateEmail}
           isFormValid={isFormValid}
           editingContactId={editingContactId}
         />

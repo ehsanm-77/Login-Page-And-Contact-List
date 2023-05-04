@@ -24,11 +24,20 @@ interface ContactFormProps {
       | React.ChangeEvent<HTMLSelectElement>
   ) => void;
   handleSubmit: (e: React.FormEvent) => void;
+  emailError: string;
+  relationError: string;
+  phoneNumberError: string;
+  lastNameError: string;
+  firstNameError: string;
+  validateEmail: () => void;
+  validateFirstName: () => void;
+  validateLastName: () => void;
+  validateRelation: () => void;
+  validatePhoneNumber: () => void;
 }
 
 const ContactForm: React.FC<ContactFormProps> = ({
   formData,
-  formErrors,
   mode,
   handleChange,
   handleSubmit,
@@ -36,6 +45,16 @@ const ContactForm: React.FC<ContactFormProps> = ({
   isFormValid,
   validateForm,
   editingContactId,
+  emailError,
+  relationError,
+  phoneNumberError,
+  lastNameError,
+  firstNameError,
+  validateEmail,
+  validateFirstName,
+  validateLastName,
+  validateRelation,
+  validatePhoneNumber,
 }) => {
   // const isFormValid = validateForm();
   return (
@@ -62,11 +81,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
             type="text"
             value={formData.firstName}
             onChange={handleChange}
-            onKeyUp={validateForm}
+            onKeyUp={validateFirstName}
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline drop-shadow-md"
             placeholder="نام ... "
           />
-          <span className="text-red-500 text-sm">{formErrors.firstName}</span>
+          <span className="text-red-500 text-sm">{firstNameError}</span>
         </div>
         <div className="mb-3">
           <label
@@ -81,11 +100,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
             type="text"
             value={formData.lastName}
             onChange={handleChange}
-            onKeyUp={validateForm}
+            onKeyUp={validateLastName}
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline drop-shadow-md"
             placeholder="نام خانوادگی ... "
           />
-          <span className="text-red-500 text-sm">{formErrors.lastName}</span>
+          <span className="text-red-500 text-sm">{lastNameError}</span>
         </div>
         <div className="mb-3">
           <label
@@ -99,12 +118,12 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="phoneNumber"
             type="text"
             value={formData.phoneNumber}
-            onKeyUp={validateForm}
+            onKeyUp={validatePhoneNumber}
             onChange={handleChange}
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline drop-shadow-md"
             placeholder="شماره موبایل  ... "
           />
-          <span className="text-red-500 text-sm">{formErrors.phoneNumber}</span>
+          <span className="text-red-500 text-sm">{phoneNumberError}</span>
         </div>
         <div className="mb-3">
           <label
@@ -118,6 +137,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="relation"
             value={formData.relation}
             onChange={handleChange}
+            onClick={validateRelation}
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline drop-shadow-md"
           >
             <option value="">نسبت</option>
@@ -126,7 +146,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             <option value="همکار">همکار</option>
             <option value="فامیل">فامیل</option>
           </select>
-          <span className="text-red-500 text-sm">{formErrors.relation}</span>
+          <span className="text-red-500 text-sm">{relationError}</span>
         </div>
         <div className="mb-3">
           <label
@@ -139,13 +159,16 @@ const ContactForm: React.FC<ContactFormProps> = ({
             id="email"
             name="email"
             type="text"
-            onKeyUp={validateForm}
+            onKeyUp={() => {
+              validateEmail();
+              validateForm();
+            }}
             value={formData.email}
             onChange={handleChange}
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline drop-shadow-md"
             placeholder="ایمیل ... "
           />
-          <span className="text-red-500 text-sm">{formErrors.email}</span>
+          <span className="text-red-500 text-sm">{emailError}</span>
         </div>
         <button
           type="submit"
@@ -179,6 +202,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                 });
               }
             }
+            return !isFormValid;
           }}
         >
           {editingContactId ? 'ویرایش' : 'اضافه کردن'}
